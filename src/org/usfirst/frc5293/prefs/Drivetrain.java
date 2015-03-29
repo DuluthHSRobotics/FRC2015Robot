@@ -63,8 +63,13 @@ public class Drivetrain implements PrefGroup {
 
     private final BooleanPref isScalingFunctionsEnabled = new BooleanPref(
             "drivetrain:is_scaling_function_enabled",
-            true
+            false
     ); { all.add(isScalingFunctionsEnabled); }
+
+    private final BooleanPref isInverted = new BooleanPref(
+            "drivetrain:is_inverted",
+            false
+    ); { all.add(isInverted); }
 
     @Override
     public List<Pref<?>> getAll() {
@@ -108,4 +113,6 @@ public class Drivetrain implements PrefGroup {
     }
 
     public BooleanPref isScalingFunctionsEnabled() { return isScalingFunctionsEnabled; }
+
+    public BooleanPref isInverted() { return isInverted; }
 }

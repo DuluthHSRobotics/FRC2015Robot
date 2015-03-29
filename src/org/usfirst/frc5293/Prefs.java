@@ -34,7 +34,7 @@ public final class Prefs {
         refreshAll();
     }
 
-    private static void refreshAll() {
+    public static void refreshAll() {
         groups.stream()
               .flatMap(group -> group.getAll().stream())
               .forEach(Pref::refresh);

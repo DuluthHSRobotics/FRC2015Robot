@@ -48,6 +48,8 @@ public class Robot extends IterativeRobot {
     }
 
     public void autonomousInit() {
+        Prefs.refreshAll();
+
         if (autonomousCommand != null) {
             autonomousCommand.start();
         }
@@ -61,6 +63,8 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
+        Prefs.refreshAll();
+
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove

@@ -1,14 +1,14 @@
 package org.usfirst.frc5293.subsystems;
 
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc5293.Devices;
 import org.usfirst.frc5293.commands.teleop.control.MecanumDriveControl;
-import org.usfirst.frc5293.subsystems.util.MecanumDrive;
 
 public class Drivetrain extends Subsystem {
 
-    private final MecanumDrive drive = Devices.getDrivetrain().getControl();
+    private final RobotDrive drive = Devices.getDrivetrain().getControl();
 
     public void initDefaultCommand() {
         setDefaultCommand(new MecanumDriveControl());
@@ -29,13 +29,13 @@ public class Drivetrain extends Subsystem {
      * @param r The rate of rotation for the robot that is completely independent of
      * the translation. [-1.0..1.0]
      */
-    public void drive(double x, double y, double r) {
+    public void joystickDrive(double x, double y, double r) {
         // TODO: Just for debug right now
         SmartDashboard.putNumber("Joystick X", x);
         SmartDashboard.putNumber("Joystick Y", y);
         SmartDashboard.putNumber("Joystick Rotation", r);
 
-        drive.drive(x, y, r, 0);
+        drive.mecanumDrive_Cartesian(x, y, r, 0);
 
         SmartDashboard.putNumber("Front Left", Devices.getDrivetrain().getFrontLeft().get());
         SmartDashboard.putNumber("Front Right", Devices.getDrivetrain().getFrontRight().get());
@@ -44,7 +44,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public void stop() {
-    	drive.drive(0, 0, 0, 0);
+    	drive.stopMotor();
     }
 }
 

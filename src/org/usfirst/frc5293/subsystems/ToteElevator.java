@@ -49,7 +49,7 @@ public class ToteElevator extends Subsystem {
     }
 
     public void stop() {
-    	master.set(0);
+    	Devices.getToteElevator().stop();
     }
 
     private Double getSpeed() {

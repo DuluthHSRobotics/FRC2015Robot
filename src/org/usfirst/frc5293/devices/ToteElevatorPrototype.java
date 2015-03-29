@@ -24,4 +24,8 @@ public final class ToteElevatorPrototype implements ToteElevator {
     public DigitalInput getBottomLimitSwitch() {
         return bottomLimitSwitch;
     }
+
+    public void stop() {
+        controllerGroup.set(0.0);
+    }
 }

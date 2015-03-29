@@ -34,5 +34,15 @@ public final class ToteElevatorCompetition implements ToteElevator {
     public DigitalInput getBottomLimitSwitch() {
         return bottomLimitSwitch;
     }
+
+    public void stop() {
+        master.setVoltageRampRate(0.0);
+
+        master.set(0.0);
+
+        if (Prefs.getToteElevator().getIsVoltageRampEnabled().get()) {
+            master.setVoltageRampRate(Prefs.getToteElevator().getVoltageRamp().get());
+        }
+    }
 }
 

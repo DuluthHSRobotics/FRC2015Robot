@@ -1,38 +1,32 @@
 package org.usfirst.frc5293.commands.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import org.usfirst.frc5293.Subsystems;
-import org.usfirst.frc5293.commands.util.TimedCommand;
-import org.usfirst.frc5293.translations.autonomous.MecanumDriveEngine;
-import org.usfirst.frc5293.translations.util.DrivingState;
+import org.usfirst.frc5293.Prefs;
+import org.usfirst.frc5293.commands.autonomous.util.DriveCommandParams;
+import org.usfirst.frc5293.commands.autonomous.util.DriveCommandParser;
+import org.usfirst.frc5293.prefs.Root;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AutonomousCommandGroup extends CommandGroup {
 
-    private static final double SECONDS = 2.0;
-    private static final MecanumDriveEngine engine = MecanumDriveEngine.getInstance();
-    private static final DrivingState movement = new DrivingState(0.7, 0.0, 0.0);
+    private final static Root prefs = Prefs.getRoot();
 
     public AutonomousCommandGroup() {
-        addSequential(new TimedCommand(SECONDS) {
-            @Override
-            protected void execute() {
-                final DrivingState result = engine.getResult(movement);
-                drive(result);
-            }
+        List<TimedAutonomousCommand> commands = getCommands().collect(Collectors.toList());
 
-            @Override
-            protected void end() {
-                super.end();
-                stop();
-            }
-        });
+        System.out.printf(String.format("Command input `%s`", commands.size()), false);
+        System.out.printf("Loaded %d commands for autonomous", commands.size());
+        commands.forEach(this::addSequential);
     }
 
-    private void drive(DrivingState state) {
-        Subsystems.getDrivetrain().drive(state.x, state.y, state.r);
-    }
+    private Stream<TimedAutonomousCommand> getCommands() {
+        String commandText = prefs.getAutonomousCommand().get();
 
-    private void stop() {
-        Subsystems.getDrivetrain().stop();
+        List<DriveCommandParams> params = DriveCommandParser.parse(commandText);
+
+        return params.stream().map(TimedAutonomousCommand::new);
     }
 }

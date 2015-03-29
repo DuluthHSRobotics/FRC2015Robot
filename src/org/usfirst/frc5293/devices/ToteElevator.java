@@ -6,4 +6,5 @@ import edu.wpi.first.wpilibj.SpeedController;
 public interface ToteElevator {
     SpeedController getController();
     DigitalInput getBottomLimitSwitch();
+    void stop();
 }

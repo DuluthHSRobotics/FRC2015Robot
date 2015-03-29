@@ -2,7 +2,7 @@ package org.usfirst.frc5293.input;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
-import org.usfirst.frc5293.input.util.OrButtonGroup;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class MecanumDrive {
     private static final int[] DRIVE_X_AXIS_BUTTONS = new int[] { 3, 2 };
@@ -17,8 +17,8 @@ public class MecanumDrive {
         this.strafeJoystick = strafeJoystick;
         this.rotationJoystick = rotationJoystick;
 
-        driveXAxisButton = new OrButtonGroup(this.strafeJoystick, DRIVE_X_AXIS_BUTTONS);
-        driveYAxisButton = new OrButtonGroup(this.strafeJoystick, DRIVE_Y_AXIS_BUTTONS);
+        driveXAxisButton = new JoystickButton(this.strafeJoystick, 2);
+        driveYAxisButton = new JoystickButton(this.strafeJoystick, 4);
     }
 
     public Joystick getStrafeJoystick() {

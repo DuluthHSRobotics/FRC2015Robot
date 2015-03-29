@@ -2,14 +2,14 @@ package org.usfirst.frc5293.translations.autonomous;
 
 import org.usfirst.frc5293.Prefs;
 import org.usfirst.frc5293.prefs.Drivetrain;
-import org.usfirst.frc5293.translations.util.DrivingState;
+import org.usfirst.frc5293.translations.util.DriveState;
 import org.usfirst.frc5293.translations.util.InputTranslationEngine;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class MecanumDriveEngine extends InputTranslationEngine<DrivingState> {
+public class MecanumDriveEngine extends InputTranslationEngine<DriveState> {
 
     private static MecanumDriveEngine instance;
 
@@ -29,21 +29,18 @@ public class MecanumDriveEngine extends InputTranslationEngine<DrivingState> {
     }
 
     @Override
-    protected List<Function<DrivingState, DrivingState>> getOperations() {
-        List<Function<DrivingState, DrivingState>> ops = new ArrayList<>();
+    protected List<Function<DriveState, DriveState>> getOperations() {
+        List<Function<DriveState, DriveState>> ops = new ArrayList<>();
 
-        ops.add(this::applySystemDisabling);
+        ops.add(this::invertYDirection);
 
         return ops;
     }
 
-    private DrivingState applySystemDisabling(DrivingState state) {
-        if (!prefs.isSystemEnabled().get()) {
-            state.x = 0;
-            state.y = 0;
-            state.r = 0;
-        }
-
+    private DriveState invertYDirection(DriveState state) {
+        state.x *= -1;
+        state.y *= -1;
+        state.r *= +1;
         return state;
     }
 }

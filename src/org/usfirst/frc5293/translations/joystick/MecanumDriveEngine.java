@@ -4,7 +4,7 @@ import org.usfirst.frc5293.Input;
 import org.usfirst.frc5293.Prefs;
 import org.usfirst.frc5293.input.MecanumDrive;
 import org.usfirst.frc5293.prefs.Drivetrain;
-import org.usfirst.frc5293.translations.util.DrivingState;
+import org.usfirst.frc5293.translations.util.DriveState;
 import org.usfirst.frc5293.translations.util.StreamingTranslationEngine;
 import org.usfirst.frc5293.util.MathUtil;
 
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState> {
+public class MecanumDriveEngine extends StreamingTranslationEngine<DriveState> {
 
     private static MecanumDriveEngine instance;
 
@@ -25,16 +25,15 @@ public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState>
 
     //
 
-    private final MecanumDrive input;
+    private final MecanumDrive input = Input.getMecanumDrive();
     private final Drivetrain prefs = Prefs.getDrivetrain();
 
     private MecanumDriveEngine() {
-        input = Input.getMecanumDrive();
     }
 
     @Override
-    protected DrivingState getInitial() {
-        DrivingState state = new DrivingState();
+    protected DriveState getInitial() {
+        DriveState state = new DriveState();
 
         state.x = input.getStrafeJoystick().getX();
         state.y = input.getStrafeJoystick().getY();
@@ -44,8 +43,8 @@ public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState>
     }
 
     @Override
-    protected List<Function<DrivingState, DrivingState>> getOperations() {
-        List<Function<DrivingState, DrivingState>> ops = new ArrayList<>();
+    protected List<Function<DriveState, DriveState>> getOperations() {
+        List<Function<DriveState, DriveState>> ops = new ArrayList<>();
 
         ops.add(this::applySystemDisabling);
         ops.add(this::applyAxisDisabling);
@@ -57,7 +56,7 @@ public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState>
         return ops;
     }
 
-    private DrivingState applySystemDisabling(DrivingState state) {
+    private DriveState applySystemDisabling(DriveState state) {
         if (!prefs.isSystemEnabled().get()) {
             state.x = 0;
             state.y = 0;
@@ -67,7 +66,7 @@ public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState>
         return state;
     }
 
-    private DrivingState applyAxisDisabling(DrivingState state) {
+    private DriveState applyAxisDisabling(DriveState state) {
         if (!prefs.isXEnabled().get()) {
             state.x = 0;
         }
@@ -83,7 +82,7 @@ public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState>
         return state;
     }
 
-    private DrivingState applySensitiveScaling(DrivingState state) {
+    private DriveState applySensitiveScaling(DriveState state) {
         if (!Prefs.getRoot().isSensitiveScalingEnabled().get()
                 || !Input.getSensitivityModeButton().get()) {
             return state;
@@ -96,7 +95,7 @@ public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState>
         return state;
     }
 
-    private DrivingState applyAxisLocking(DrivingState state) {
+    private DriveState applyAxisLocking(DriveState state) {
         if (prefs.isAxisLockingEnabled().get()) {
             if (input.getDriveXAxisButton().get()) {
                 state.y = 0;
@@ -108,7 +107,7 @@ public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState>
         return state;
     }
 
-    private DrivingState applyQuadScaling(DrivingState state) {
+    private DriveState applyQuadScaling(DriveState state) {
         if (!prefs.isScalingFunctionsEnabled().get()) {
             return state;
         }
@@ -120,7 +119,7 @@ public class MecanumDriveEngine extends StreamingTranslationEngine<DrivingState>
         return state;
     }
 
-    private DrivingState applyInversions(DrivingState state) {
+    private DriveState applyInversions(DriveState state) {
         state.x *=  1;
         state.y *=  1;
         state.r *= -1;

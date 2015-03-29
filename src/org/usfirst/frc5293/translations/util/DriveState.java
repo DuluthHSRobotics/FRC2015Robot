@@ -2,15 +2,15 @@ package org.usfirst.frc5293.translations.util;
 
 import java.util.function.Function;
 
-public class DrivingState {
+public class DriveState {
     public double x;
     public double y;
     public double r;
 
-    public DrivingState() {
+    public DriveState() {
     }
 
-    public DrivingState(double x, double y, double r) {
+    public DriveState(double x, double y, double r) {
         this.x = x;
         this.y = y;
         this.r = r;
