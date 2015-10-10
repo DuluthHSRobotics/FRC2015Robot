@@ -16,8 +16,8 @@ public class AutonomousCommandGroup extends CommandGroup {
         addSequential(new TimedCommand(SECONDS) {
             @Override
             protected void execute() {
-                final DrivingState result = engine.getResult(movement);
-                drive(result);
+//                final DrivingState result = engine.getResult(movement);
+//                drive(result);
             }
 
             @Override
